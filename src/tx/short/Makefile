@@ -1,19 +1,17 @@
-CLIB=-L/lib64 -L${HOME}lib/ -lc  -g
-CINC=-I/${HOME}src/incl_c -I/usr/incl
-CCFLAGS= -D DEBUG -g 
-OBJECT=$(wildcard *.c)
-OBJ=ch05.o main.o ch04.o
-VPATH=/home/lpj/src/incl_c/
-main:  $(OBJ) 
-	cc -o main $(CCFLAGS)  $^ 
-#ch03.o : ch03.c  
-#	cc -c -o $@ $(CCFLAGS) -I/home/lpj/src/incl_c $*.c
-#main.o : main.c  
-#	cc -c -o $@ $(CCFLAGS) -I/home/lpj/src/incl_c $*.c
-#ch04.o :   ch04.o
-#	cc -c -o $@ $(CCFLAGS) -I/home/lpj/src/incl_c $*.c
-$(OBJ):$(wildcard,*.c) public.h
-	cc -c -I$(VPATH) -o $@  $?.c
+CCFLAGS= -D DEBUG -g -shared -fPIC 
+HOMEPATH=~/lib/
+HOME=/home/lpj
+INC=-I$(HOME)/src/incl_c -I/usr/include/ 
+LIB=-L$(HOME)/lib  -lbase
+OBJECT=ch03.so ch04.so ch05.so ch06.so
+OBJECT1=ch03.o ch04.o ch05.o ch06.o
+all:$(OBJECT)
+$(OBJECT):$(OBJECT1)
+	cc -o $@ $(CCFLAGS) $(INC) $(LIB) $
+	mv *.so $(HOME)/lib/
+%.o:%.c
+	cc -c -o $@ $(CCFLAGS) $(INC) $(LIB) $<
+
 .PHONE:clean
 clean:
-	-rm -rf $(OBJ)
+	-rm -rf *.o
